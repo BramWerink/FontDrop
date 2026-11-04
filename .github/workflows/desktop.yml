@@ -35,7 +35,7 @@ jobs:
           pip install -r requirements.txt pyinstaller
 
       - name: Build executable
-        run: pyinstaller --name FontDrop --windowed --noconfirm run_fontdrop.py
+        run: pyinstaller --name FontDrop --windowed --noconfirm --add-data "fontdrop/gui/fonts;gui/fonts" run_fontdrop.py
 
       - name: Install Inno Setup
         run: choco install innosetup --no-progress -y
