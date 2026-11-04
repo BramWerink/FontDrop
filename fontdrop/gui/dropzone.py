@@ -1,4 +1,4 @@
-"""Grote dropzone: dikke zwarte rand, bold tekst, inversie bij hover/drag."""
+"""Dropzone: een zachte, onregelmatige vorm (blob) met een dunne inktrand."""
 from __future__ import annotations
 
 from pathlib import Path
@@ -6,7 +6,7 @@ from pathlib import Path
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QFrame, QLabel, QVBoxLayout
 
-from .style import BLACK, HEADLINE_FONT_STACK, WHITE
+from .style import HEADLINE_FONT_STACK, INK, INK_MUTED, SAGE, SAGE_TINT
 
 ACCEPTED_SUFFIX = ".zip"
 
@@ -20,15 +20,16 @@ class DropZone(QFrame):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setAcceptDrops(True)
-        self.setMinimumHeight(280)
+        self.setFixedSize(300, 300)
         self._active = False
 
-        self._label = QLabel("SLEEP FONTS HIER")
+        self._label = QLabel("Drop zips of mappen")
         self._label.setAlignment(Qt.AlignCenter)
-        self._sub = QLabel("zips en mappen, allemaal tegelijk")
+        self._sub = QLabel("of klik om te bladeren")
 
         layout = QVBoxLayout(self)
         layout.setAlignment(self._label.alignment())
+        layout.setSpacing(6)
         layout.addStretch(1)
         layout.addWidget(self._label)
         layout.addWidget(self._sub)
@@ -38,15 +39,26 @@ class DropZone(QFrame):
         self._apply_style()
 
     def _apply_style(self) -> None:
-        bg, fg = (BLACK, WHITE) if self._active else (WHITE, BLACK)
+        border = SAGE if self._active else INK
+        bg = SAGE_TINT if self._active else "transparent"
         self.setStyleSheet(
-            f"DropZone {{ background-color: {bg}; border: 4px solid {BLACK}; }}"
+            f"""
+            DropZone {{
+                background-color: {bg};
+                border: 1.5px solid {border};
+                border-top-left-radius: 60px;
+                border-top-right-radius: 90px;
+                border-bottom-right-radius: 70px;
+                border-bottom-left-radius: 100px;
+            }}
+            """
         )
         self._label.setStyleSheet(
-            f"color: {fg}; font-family: {HEADLINE_FONT_STACK}; font-size: 32px; font-weight: 700; border: none; background: transparent;"
+            f"color: {INK}; font-family: {HEADLINE_FONT_STACK}; font-style: italic; "
+            "font-size: 20px; font-weight: 600; border: none; background: transparent;"
         )
         self._sub.setStyleSheet(
-            f"color: {fg}; font-size: 13px; letter-spacing: 1px; border: none; background: transparent;"
+            f"color: {INK_MUTED}; font-size: 12px; border: none; background: transparent;"
         )
 
     def _set_active(self, active: bool) -> None:

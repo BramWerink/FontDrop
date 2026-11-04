@@ -15,7 +15,7 @@ from PySide6.QtWidgets import (
 )
 
 from ..dedupe import Family
-from .style import HEADLINE_FONT_STACK
+from .style import HEADLINE_FONT_STACK, INK_MUTED, SAGE
 
 
 def _rule() -> QFrame:
@@ -43,13 +43,12 @@ class _StyleRow(QWidget):
         label.setStyleSheet("border: none; background: transparent;")
         layout.addWidget(label, stretch=1)
 
-        status = "al geïnstalleerd" if choice.already_installed else "nieuw"
-        meta = QLabel(f"{choice.chosen.fmt}  ·  {status}".upper())
-        meta.setProperty("class", "smallcaps")
-        meta.setStyleSheet(
-            "border: none; background: transparent; font-size: 11px; "
-            "font-weight: 600; letter-spacing: 1px; color: #555555;"
-        )
+        if choice.already_installed:
+            status, color = "installed", INK_MUTED
+        else:
+            status, color = "new", SAGE
+        meta = QLabel(f"{choice.chosen.fmt.lower()} · {status}")
+        meta.setStyleSheet(f"border: none; background: transparent; font-size: 11px; color: {color};")
         meta.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
         layout.addWidget(meta)
 
@@ -83,9 +82,9 @@ class OverviewWidget(QWidget):
         root.setContentsMargins(48, 40, 48, 40)
         root.setSpacing(16)
 
-        kicker = QLabel("FONTDROP")
+        kicker = QLabel("FontDrop")
         kicker.setObjectName("kicker")
-        headline = QLabel("Overzicht")
+        headline = QLabel("Wat is er gevonden")
         headline.setObjectName("headline")
         root.addWidget(kicker)
         root.addWidget(headline)
@@ -115,10 +114,10 @@ class OverviewWidget(QWidget):
         root.addWidget(self._summary_label)
 
         buttons = QHBoxLayout()
-        self._back_btn = QPushButton("OPNIEUW")
-        self._back_btn.setObjectName("secondary")
+        self._back_btn = QPushButton("Opnieuw")
         self._back_btn.clicked.connect(self.backRequested.emit)
-        self._install_btn = QPushButton("INSTALLEER")
+        self._install_btn = QPushButton("Installeer")
+        self._install_btn.setObjectName("primary")
         self._install_btn.clicked.connect(self._emit_install)
         buttons.addWidget(self._back_btn)
         buttons.addStretch(1)
@@ -143,7 +142,7 @@ class OverviewWidget(QWidget):
         for family in families:
             heading = QLabel(family.name)
             heading.setStyleSheet(
-                f"font-family: {HEADLINE_FONT_STACK}; font-size: 20px; font-weight: 700; "
+                f"font-family: {HEADLINE_FONT_STACK}; font-size: 20px; font-weight: 600; "
                 "border: none; margin-top: 12px;"
             )
             self._list_layout.insertWidget(self._list_layout.count() - 1, heading)

@@ -27,7 +27,7 @@ class SummaryWidget(QWidget):
         root.setContentsMargins(48, 40, 48, 40)
         root.setSpacing(16)
 
-        kicker = QLabel("FONTDROP")
+        kicker = QLabel("FontDrop")
         kicker.setObjectName("kicker")
         self._headline = QLabel("Klaar")
         self._headline.setObjectName("headline")
@@ -36,7 +36,7 @@ class SummaryWidget(QWidget):
         root.addWidget(_rule())
 
         self._totals = QLabel("")
-        self._totals.setStyleSheet("border: none; font-size: 15px; font-weight: 600;")
+        self._totals.setStyleSheet("border: none; font-size: 14px; color: #6B6358;")
         root.addWidget(self._totals)
 
         self._list_container = QWidget()
@@ -52,7 +52,8 @@ class SummaryWidget(QWidget):
         root.addWidget(_rule())
         buttons = QHBoxLayout()
         buttons.addStretch(1)
-        self._done_btn = QPushButton("NOG EEN KEER")
+        self._done_btn = QPushButton("Nog een keer")
+        self._done_btn.setObjectName("primary")
         self._done_btn.clicked.connect(self.doneRequested.emit)
         buttons.addWidget(self._done_btn)
         root.addLayout(buttons)
@@ -65,7 +66,7 @@ class SummaryWidget(QWidget):
                 widget.deleteLater()
 
         self._totals.setText(
-            f"{len(installed)} GEÏNSTALLEERD   ·   {len(skipped)} OVERGESLAGEN   ·   {len(failed)} MISLUKT"
+            f"{len(installed)} geïnstalleerd · {len(skipped)} overgeslagen · {len(failed)} mislukt"
         )
 
         for face in installed:
