@@ -119,8 +119,8 @@ class OverviewWidget(QWidget):
         self._install_btn = QPushButton("Installeer")
         self._install_btn.setObjectName("primary")
         self._install_btn.clicked.connect(self._emit_install)
-        buttons.addWidget(self._back_btn)
         buttons.addStretch(1)
+        buttons.addWidget(self._back_btn)
         buttons.addWidget(self._install_btn)
         root.addLayout(buttons)
 
