@@ -4,6 +4,11 @@ Install fonts from multiple zips and folders in one go, on Windows, with no admi
 
 Drag your downloads (zips full of subfolders, licenses, previews, OTF and TTF mixed together) into one window. FontDrop extracts everything, recursively finds usable font files, removes duplicates based on the actual font name, and installs what you check.
 
+<p align="center">
+  <img src="docs/screenshots/dropzone.png" alt="FontDrop start screen with the dropzone" width="48%">
+  <img src="docs/screenshots/font-list.png" alt="FontDrop overview of found font families and styles" width="48%">
+</p>
+
 ## Features
 
 - Drag zips and/or folders into the window, or pick them through a file dialog.
